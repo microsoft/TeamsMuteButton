@@ -23,6 +23,9 @@ char ctrlKey = KEY_LEFT_CTRL;
 // Use this for OSX:
 // char ctrlKey = KEY_LEFT_GUI;
 
+// Set a variable to store the slide switch counter
+int slideCounter = 0;
+
 // Set a variable to store the button counter
 int buttonCounter = 0;
 
@@ -42,23 +45,26 @@ void loop() {
   // While slide switch is to the left (towards Button A), allow for mute
   while(CircuitPlayground.slideSwitch()){
     // Only print status first time slide switch is moved
-    if(buttonCounter == 0){ 
+    if(slideCounter == 0){ 
       Serial.println("Ready to mute!");
-      Serial.println(buttonCounter);
-      buttonCounter += 1; 
+      slideCounter += 1; 
     }
     // If pushbutton pressed, press 'Ctrl + Shift + M'
     if (digitalRead(muteButton)) {
-      CircuitPlayground.redLED(HIGH);
-      Serial.println("Pressed");
-      Keyboard.press(ctrlKey);
-      Keyboard.press(KEY_LEFT_SHIFT);
-      Keyboard.press('m');
-      delay(500); // Delay to avoid multi-presses
+      if (buttonCounter == 0){
+        CircuitPlayground.redLED(HIGH);
+        Serial.println("Pressed");
+        Keyboard.press(ctrlKey);
+        Keyboard.press(KEY_LEFT_SHIFT);
+        Keyboard.press('m');
+        buttonCounter += 1;
+        delay(500); // Delay to avoid multi-presses
+      }
     }
     CircuitPlayground.redLED(LOW);
+    buttonCounter = 0;
     Keyboard.releaseAll(); // Release all keys. Super important!!
   }
-  buttonCounter = 0;
+  slideCounter = 0;
   Keyboard.releaseAll();
 }

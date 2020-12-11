@@ -1,10 +1,12 @@
 # Microsoft Teams Mute Button!
 
-> This project uses an [Adafruit Circuit Playground Express (CPX)](https://www.adafruit.com/product/3333) and a large pushbutton to create an easy-to-reach mute button for Microsoft Teams. Because 2020.
+Build an easy-to-reach pushbutton to mute/unmute yourself while on a Microsoft Teams call! Because 2020.
 
-Skill level: Beginner
-Estimated Build Time: <30 min
-Estimated Cost: $30
+> This project uses an [Adafruit Circuit Playground Express (CPX)](https://www.adafruit.com/product/3333) and a large pushbutton to create a mute button for Microsoft Teams via the hot key command "Ctrl + Shift + m".
+
+* Skill level: Beginner
+* Estimated Build Time: 5 - 10 min
+* Estimated Cost: $30
 
 ## Materials
 * [Adafruit Circuit Playground Express and microUSB cable](https://www.adafruit.com/product/3517)
@@ -18,8 +20,11 @@ Estimated Cost: $30
 1. Connect the bottom pushbutton terminal to CPX pin A1.
 2. Connect the bottom side pushbutton terminal to CPX 3.3V pin.
 3. Plug in the microUSB cable between the CPX and your computer.
+4. Optional: Build a simple case for your button. 
 
-That's it!
+    *I used a sturdy cardboard box for this -- cut a hole in the top, secure the button, and adhere the CPX to the front for easy access!*
+
+That's it! 
 
 ## Software Instructions
 1. Download this repo, or copy and paste the code in "TeamsMuteButton" folder called "TeamsMuteButton.ino".
@@ -43,6 +48,20 @@ Note: The pushbutton triggers the keyboard "CTRL + Shift + M" keys, which does d
 1. Use the Serial Monitor to check the CPX slide switch status. When it is enabled, it will print "Ready to mute!" to the Serial Monitor.
 1. Use the Serial Monitor to check if the pushbutton is getting triggered. When it is pressed and read by the CPX, it will print "Pressed" to the Serial Monitor.
 1. Questions or other problems? Please open an issue or reach out to us: AskAMaker@microsoft.com
+
+
+## Going Further
+* This is simple prototype designed to help you get a mute button up and running as fast as possible. Want a more permanent solution? Awesome! Here are some tips:
+    
+    1.  Replace the CPX with a smaller and more robust M0 board, like the [Arduinno Nano 33 IoT](https://store.arduino.cc/usa/nano-33-iot).
+        
+        **Note:** You will need to change the wiring  and add a resistor. [Here's a helpful overview](https://www.arduino.cc/en/tutorial/pushbutton).
+
+    1. Solder wires between the pushbutton and microcontroller, and/or coat in hot glue or epoxy.
+    1. Build an enclosure for the pushbutton and microcontroller, or adhere to the side of your desk.
+
+* Use the [Microsoft Teams API mute call](https://docs.microsoft.com/en-us/graph/api/call-mute?view=graph-rest-1.0&tabs=http) to write a more complex program that can mute/unmute Teams even if you aren't actively using it!
+
 
 Happy Making!
 
