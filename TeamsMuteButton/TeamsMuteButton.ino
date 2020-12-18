@@ -11,11 +11,13 @@
  *      
 
 */
+// LIBRARIES
 #include <Keyboard.h>
 #include <Adafruit_CircuitPlayground.h>
 
-// Set the pin for the pushbutton
-const int muteButton = 6;
+// CONSTANTS
+const int MUTE_BUTTON = 6; // Set the pin for the pushbutton
+const int DEBOUNCE_DELAY = 50; // Set debounce time; increase if the output flickers
 
 // Set up a variable to hold the control (CTRL) key
 // Use this option for Windows and Linux:
@@ -23,16 +25,18 @@ char ctrlKey = KEY_LEFT_CTRL;
 // Use this for OSX:
 // char ctrlKey = KEY_LEFT_GUI;
 
-// Set a variable to store the slide switch counter
-int slideCounter = 0;
+// VARIABLES
+int slideCounter = 0; // Set a variable to store the slide switch counter
+int currentButtonState = 0; // Set a variable to store the button state
+int lastSteadyState = 0;       // the previous steady state from the button
+int lastFlickerableState = 0;  // the previous flickerable state from the button
+long lastDebounceTime = 0;  // the last time the button was pressed
 
-// Set a variable to store the button counter
-int buttonCounter = 0;
 
 void setup() {
   // Set pushbutton as an input, enable pull-down resistor
   CircuitPlayground.begin();
-  pinMode(muteButton, INPUT_PULLDOWN);
+  pinMode(MUTE_BUTTON, INPUT_PULLDOWN);
 
   // Set up Serial Monitor for status/debugging
   Serial.begin(115200);
@@ -49,21 +53,31 @@ void loop() {
       Serial.println("Ready to mute!");
       slideCounter += 1; 
     }
-    // If pushbutton pressed, press 'Ctrl + Shift + M'
-    if (digitalRead(muteButton)) {
-      if (buttonCounter == 0){
+    
+    // Read the button state
+    currentButtonState = digitalRead(MUTE_BUTTON);
+    
+    // If the switch/button changed, due to noise or pressing:
+    if(currentButtonState != lastFlickerableState){
+      // reset debounce timer
+      lastDebounceTime = millis(); 
+      // save the last state
+      lastFlickerableState = currentButtonState;
+    }
+
+    if((millis() - lastDebounceTime) > DEBOUNCE_DELAY){
+      // if button state has changed (via press)
+      if(lastSteadyState == 1 && currentButtonState == 0){
         CircuitPlayground.redLED(HIGH);
         Serial.println("Pressed");
         Keyboard.press(ctrlKey);
         Keyboard.press(KEY_LEFT_SHIFT);
         Keyboard.press('m');
-        buttonCounter += 1;
-        delay(500); // Delay to avoid multi-presses
       }
+      lastSteadyState = currentButtonState;
+      CircuitPlayground.redLED(LOW);
+      Keyboard.releaseAll(); // Release all keys. Super important!!
     }
-    CircuitPlayground.redLED(LOW);
-    buttonCounter = 0;
-    Keyboard.releaseAll(); // Release all keys. Super important!!
   }
   slideCounter = 0;
   Keyboard.releaseAll();
