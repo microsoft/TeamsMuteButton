@@ -1,5 +1,7 @@
 # Microsoft Teams Mute Button!
 
+![Mute Button demonstration during a Microsoft Teams call](images\Cover-2.jpg "Quickly mute/unmute during a Microsoft Teams Call!").
+
 Build an easy-to-reach pushbutton to mute/unmute yourself while on a Microsoft Teams call! Because 2020.
 
 > This project uses an [Adafruit Circuit Playground Express (CPX)](https://www.adafruit.com/product/3333) and a large pushbutton to create a mute button for Microsoft Teams via the hot key command "Ctrl + Shift + m".
